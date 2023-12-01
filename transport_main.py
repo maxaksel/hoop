@@ -17,28 +17,28 @@ import imageio
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     n = 100
-    gamma = 0.001
+    gamma = 0.1
     gpu_device = torch.device('cpu')  # run on CPU for now
 
     transport_problem = OptimalTransport(n=n, gamma=gamma, gpu_device=gpu_device)
 
     p = torch.normal(mean=torch.zeros(n,), std=torch.ones(n,)).double().to(gpu_device)
     p = (p - p.min())
-    # p[int(n / 2):] = 0
+    p[int(n / 2):] = 0
     p /= p.sum()
     q = torch.normal(mean=torch.zeros(n,), std=torch.ones(n,)).double().to(gpu_device)
     q = (q - q.min())
-    # q[:int(n / 2)] = 0
+    q[:int(n / 2)] = 0
     q /= q.sum()
     # p = torch.Tensor([0, 0, 1, 0, 0, 0, 0, 0, 0, 0]).double().to(gpu_device)
     # q = torch.Tensor([0, 0.5, 0, 0.5, 0, 0, 0, 0, 0, 0]).double().to(gpu_device)
 
-    epsilon = 1e-5
-
-    p[0:] = epsilon
-    q[0:] = epsilon
-    p[0] = 1 - 99*epsilon
-    q[-1] = 1 - 99*epsilon
+    # epsilon = 1e-5
+    #
+    # p[0:] = epsilon
+    # q[0:] = epsilon
+    # p[0] = 1 - 99*epsilon
+    # q[-1] = 1 - 99*epsilon
 
     # print(p)
     # print(q)
@@ -68,7 +68,7 @@ if __name__ == '__main__':
                                                 transport_problem.grad_func,
                                                 10, gpu_device)
 
-    # Cubic Regularization Slow
+    # # Cubic Regularization Slow
     # theta_hat = torch.clone(orig_theta_hat)
     # loss_na2, theta_star = non_accelerated_cubic_newton(theta_hat, num_iters, transport_problem.loss_func,
     #                                                     transport_problem.grad_func,

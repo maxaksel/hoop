@@ -30,7 +30,7 @@ if __name__ == '__main__':
     # Quadratic Newton
     theta_hat = torch.clone(orig_theta_hat)
     loss_qn, theta_star = plain_newton(theta_hat, 100, bf.nesterov_f, bf.nesterov_grad,
-                                       bf.nesterov_hessian, 10, 1, gpu_device)
+                                       bf.nesterov_hessian, 1, 1, gpu_device)
     error_qn = torch.abs(loss_qn - bf.ideal_minimum())
 
     # Non-Accelerated Cubic Newton
@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
     plt.plot(loss_gd, label="Gradient Descent")
     plt.plot(loss_agd, label="Acc. Gradient Descent")
-    # plt.plot(loss_qn, label="Quadratic Newton")
+    plt.plot(loss_qn, label="Quadratic Newton")
     plt.plot(loss_nan, label="Cubic Newton")
     plt.plot(loss_an, label="Acc. Cubic Newton")
     plt.ylabel("Function Value")
